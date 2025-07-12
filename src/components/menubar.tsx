@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -13,7 +14,7 @@ import {
 } from '@/components/ui/menubar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Home, FileText, User, LogOut } from 'lucide-react';
+import { Home, FileText, User, LogOut, FilePieChart } from 'lucide-react';
 import { Logo } from './icons';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +24,7 @@ export function Menubar() {
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/salary-slips', label: 'Salary Slips', icon: FileText },
+    { href: '/statement', label: 'Statement', icon: FilePieChart },
     { href: '/profile', label: 'Profile', icon: User },
   ];
 
