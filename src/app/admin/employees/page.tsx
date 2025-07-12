@@ -80,9 +80,11 @@ export default function ManageEmployeesPage() {
                                                     <Eye className="mr-2 h-4 w-4" />
                                                     View Details
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem asChild>
+                                                  <Link href={`/admin/employees/${employee.id}/edit`}>
                                                     <Pencil className="mr-2 h-4 w-4" />
                                                     Edit
+                                                  </Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem className="text-red-400">
                                                     <Trash2 className="mr-2 h-4 w-4" />
