@@ -86,7 +86,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <div className={cn('antialiased admin-bg', inter.variable, spaceGrotesk.variable)}>
+      <div className="admin-bg">
         <div className="min-h-screen flex flex-col">
             <AdminHeader />
             <main>{children}</main>
