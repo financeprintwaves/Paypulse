@@ -34,15 +34,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  <Link href={item.href} legacyBehavior passHref>
-                    <SidebarMenuButton
-                      isActive={pathname === item.href}
-                      tooltip={{ children: item.label }}
-                    >
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                    tooltip={{ children: item.label }}
+                  >
+                    <Link href={item.href}>
                       <item.icon className="h-5 w-5" />
                       <span>{item.label}</span>
-                    </SidebarMenuButton>
-                  </Link>
+                    </Link>
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -67,16 +68,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         <p className="font-bold">Branch</p>
                         <p className="text-muted-foreground">New York (NY-01)</p>
                     </div>
-                    <Link href="/profile">
-                        <Button variant="ghost" className="w-full justify-start text-sm">
+                    <Button asChild variant="ghost" className="w-full justify-start text-sm">
+                        <Link href="/profile">
                             <User className="mr-2 h-4 w-4" /> My Profile
-                        </Button>
-                    </Link>
-                    <Link href="/">
-                        <Button variant="ghost" className="w-full justify-start text-sm text-red-400 hover:text-red-400 hover:bg-red-500/10">
+                        </Link>
+                    </Button>
+                    <Button asChild variant="ghost" className="w-full justify-start text-sm text-red-400 hover:text-red-400 hover:bg-red-500/10">
+                        <Link href="/">
                             <LogOut className="mr-2 h-4 w-4" /> Sign Out
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 </PopoverContent>
             </Popover>
           </SidebarFooter>
