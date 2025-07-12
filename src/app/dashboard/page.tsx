@@ -1,9 +1,11 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { BarChart, CreditCard, Users, Banknote } from "lucide-react"
+import { BarChart as BarChartIcon, CreditCard, Users, Banknote } from "lucide-react"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart"
-import { Bar, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 
 const chartData = [
   { month: "Jan", salary: 18600 },
@@ -68,7 +70,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Overtime Hours</CardTitle>
-            <BarChart className="h-4 w-4 text-muted-foreground text-blue-400" />
+            <BarChartIcon className="h-4 w-4 text-muted-foreground text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">+12</div>
