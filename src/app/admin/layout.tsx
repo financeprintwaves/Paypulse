@@ -1,11 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
-import '../globals.css';
-import './admin.css';
-import { Toaster } from '@/components/ui/toaster';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { Logo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { LogOut, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,16 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-});
+import { Logo } from '@/components/icons';
+import { AdminNav } from '@/components/admin-nav';
+import '../globals.css';
+import './admin.css';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Admin - PayPulse HR',
@@ -41,6 +30,9 @@ function AdminHeader() {
           <Logo className="w-8 h-8 text-primary" />
           <span className="font-headline text-xl font-bold text-primary">PayPulse Admin</span>
         </Link>
+        
+        <AdminNav />
+
         <div className="flex flex-1 items-center justify-end gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
