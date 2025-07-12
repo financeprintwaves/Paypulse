@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useState, useEffect } from 'react';
@@ -9,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { generateLetterhead } from "@/app/actions";
 import { Logo } from './icons';
+import { cn } from '@/lib/utils';
 
 interface Employee {
     name: string;
@@ -65,18 +67,23 @@ export function SalarySlipDialog({ employee, slipData, trigger }: SalarySlipDial
 
     const earnings = [
         { name: "Basic Salary", amount: 3500 },
-        { name: "House Rent Allowance (HRA)", amount: 1750 },
-        { name: "Special Allowance", amount: 500 },
+        { name: "HRA/FDA", amount: 1750 },
+        { name: "Dearness Allowance", amount: 500 },
+        { name: "Bonus", amount: 250 },
+        { name: "OT Earning", amount: 150 },
     ];
+
     const deductions = [
-        { name: "Provident Fund (PF)", amount: 210 },
-        { name: "Professional Tax", amount: 200 },
-        { name: "Advance Repayment", amount: 126 },
+        { name: "Absent", amount: 0 },
+        { name: "Medical", amount: 150 },
+        { name: "Damage", amount: 0 },
+        { name: "Others", amount: 200 },
     ];
 
     const totalEarnings = earnings.reduce((sum, item) => sum + item.amount, 0);
     const totalDeductions = deductions.reduce((sum, item) => sum + item.amount, 0);
     const netSalary = totalEarnings - totalDeductions;
+    const isOutstanding = netSalary < 0;
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -172,8 +179,12 @@ export function SalarySlipDialog({ employee, slipData, trigger }: SalarySlipDial
                             </div>
                         </div>
                         <div className="flex flex-col items-end justify-center">
-                            <p className="text-sm text-muted-foreground">Net Salary</p>
-                            <p className="text-3xl font-bold font-headline text-green-400">${netSalary.toFixed(2)}</p>
+                            <p className={cn("text-sm", isOutstanding ? 'text-red-400' : 'text-muted-foreground')}>
+                                {isOutstanding ? 'Outstanding' : 'Net Salary'}
+                            </p>
+                            <p className={cn("text-3xl font-bold font-headline", isOutstanding ? 'text-red-400' : 'text-green-400')}>
+                                ${Math.abs(netSalary).toFixed(2)}
+                            </p>
                         </div>
                      </section>
                 </div>
