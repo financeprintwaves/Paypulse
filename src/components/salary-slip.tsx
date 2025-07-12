@@ -35,9 +35,11 @@ export function SalarySlipDialog({ employee, slipData, trigger }: SalarySlipDial
     const [logoUrl, setLogoUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [paymentDate, setPaymentDate] = useState('');
 
     useEffect(() => {
         if (isOpen) {
+            setPaymentDate(new Date().toLocaleDateString());
             const fetchLetterhead = async () => {
                 setLoading(true);
                 setLogoUrl(null);
@@ -113,7 +115,7 @@ export function SalarySlipDialog({ employee, slipData, trigger }: SalarySlipDial
                             <p className="text-sm text-muted-foreground">Employee ID: {employee.id}</p>
                         </div>
                         <div className="text-right">
-                             <p className="text-sm text-muted-foreground">Payment Date: {new Date().toLocaleDateString()}</p>
+                             <p className="text-sm text-muted-foreground">Payment Date: {paymentDate}</p>
                         </div>
                     </section>
                     <Separator />
