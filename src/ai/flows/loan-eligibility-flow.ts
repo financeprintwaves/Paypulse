@@ -35,17 +35,18 @@ const prompt = ai.definePrompt({
   prompt: `You are an expert financial analyst for an HR department. Your task is to calculate the maximum loan (advance) an employee is eligible for based on their financial data.
 
   **Policy Rules:**
-  1.  The maximum loan amount cannot exceed 1.5 times the employee's monthly net salary.
-  2.  Any existing outstanding balance must be subtracted from the maximum possible loan amount.
-  3.  The final eligible amount cannot be negative. If the calculation results in a negative number, the eligibility is 0.
-  4.  The current date is {{currentDate}}. Consider if it's early or late in the month, but the primary factors are salary and outstanding balance.
+  1.  The maximum loan is calculated on a pro-rata basis of the employee's monthly net salary. For example, if it's the 15th day of a 30-day month, the employee has earned half their salary, so the base for the loan calculation is 50% of their net salary.
+  2.  The maximum loan amount cannot exceed the pro-rata earnings.
+  3.  Any existing outstanding balance must be subtracted from the maximum possible pro-rata loan amount.
+  4.  The final eligible amount cannot be negative. If the calculation results in a negative number, the eligibility is 0.
+  5.  Use today's date, which is {{{currentDate}}}, to determine the number of days worked this month.
 
   **Employee Data:**
   - Employee ID: {{{employeeId}}}
   - Current Monthly Salary: {{{currentSalary}}}
   - Outstanding Advance/Loan Balance: {{{outstandingBalance}}}
 
-  Calculate the final eligible amount and provide a brief reasoning.
+  Calculate the final eligible amount based on these rules and provide a brief reasoning, explaining the pro-rata calculation.
   `,
 });
 
