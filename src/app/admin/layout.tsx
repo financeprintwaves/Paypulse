@@ -86,20 +86,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body
-        className={cn(
-          'antialiased admin-bg',
-          inter.variable,
-          spaceGrotesk.variable
-        )}
-      >
+      <div className={cn('antialiased admin-bg', inter.variable, spaceGrotesk.variable)}>
         <div className="min-h-screen flex flex-col">
             <AdminHeader />
             <main>{children}</main>
         </div>
         <Toaster />
-      </body>
-    </html>
+      </div>
   );
 }
