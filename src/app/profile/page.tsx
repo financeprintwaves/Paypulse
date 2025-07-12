@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -5,16 +8,28 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Eye, FileText, AlertTriangle, ShieldCheck, FileWarning } from "lucide-react"
+import { Eye, FileText, AlertTriangle, ShieldCheck, FileWarning, Upload } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-const employeeDocuments = [
+const initialDocuments = [
     { name: "Passport", expiryDate: "2028-10-22", status: "active", icon: FileText },
     { name: "Resident ID", expiryDate: "2024-08-15", status: "expiring", icon: FileText },
     { name: "Joining Letter", expiryDate: "N/A", status: "active", icon: FileText },
     { name: "Warning Letter", expiryDate: "N/A", status: "active", icon: FileWarning },
     { name: "Re-joining Letter", expiryDate: "N/A", status: "active", icon: FileText },
 ];
+
+const getStatusFromDate = (expiryDate: string | null): "active" | "expiring" | "expired" => {
+    if (!expiryDate || expiryDate === 'N/A') return 'active';
+    const now = new Date();
+    const expiry = new Date(expiryDate);
+    const thirtyDaysFromNow = new Date();
+    thirtyDaysFromNow.setDate(now.getDate() + 30);
+
+    if (expiry < now) return 'expired';
+    if (expiry <= thirtyDaysFromNow) return 'expiring';
+    return 'active';
+}
 
 const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -43,6 +58,28 @@ const getStatusIcon = (status: string) => {
 }
 
 export default function ProfilePage() {
+    const [employeeDocuments, setEmployeeDocuments] = useState(initialDocuments.map(doc => ({ ...doc, status: getStatusFromDate(doc.expiryDate) })));
+    const [newDocument, setNewDocument] = useState({ name: '', expiryDate: '', file: null as File | null });
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setNewDocument(prev => ({ ...prev, file: e.target.files?.[0] || null }));
+        }
+    }
+
+    const handleAddDocument = () => {
+        if (newDocument.name && newDocument.file) {
+            const newDoc = {
+                name: newDocument.name,
+                expiryDate: newDocument.expiryDate || 'N/A',
+                status: getStatusFromDate(newDocument.expiryDate),
+                icon: FileText
+            };
+            setEmployeeDocuments(prev => [...prev, newDoc]);
+            setNewDocument({ name: '', expiryDate: '', file: null });
+        }
+    }
+
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
@@ -101,7 +138,7 @@ export default function ProfilePage() {
                         </CardContent>
                     </Card>
                 </div>
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 space-y-8">
                     <Card>
                         <CardHeader>
                             <CardTitle>Personal Details</CardTitle>
@@ -146,6 +183,33 @@ export default function ProfilePage() {
                             </div>
                             <div className="flex justify-end">
                                 <Button className="bg-accent hover:bg-accent/90">Save Changes</Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Upload New Document</CardTitle>
+                            <CardDescription>For admin use only. Upload documents to this employee's profile.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="docName">Document Name</Label>
+                                <Input id="docName" placeholder="e.g., Visa Copy" value={newDocument.name} onChange={e => setNewDocument(prev => ({...prev, name: e.target.value}))} />
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="docExpiry">Expiry Date (Optional)</Label>
+                                <Input id="docExpiry" type="date" value={newDocument.expiryDate} onChange={e => setNewDocument(prev => ({...prev, expiryDate: e.target.value}))}/>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="docFile">File</Label>
+                                <Input id="docFile" type="file" onChange={handleFileUpload} />
+                            </div>
+                            <div className="flex justify-end">
+                                <Button onClick={handleAddDocument} disabled={!newDocument.name || !newDocument.file}>
+                                    <Upload className="mr-2 h-4 w-4" />
+                                    Upload Document
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>
