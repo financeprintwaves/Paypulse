@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.admin-bg {
+    background-color: hsl(220, 15%, 15%);
+    background-image: 
+        radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.1) 1px, transparent 0);
+    background-size: 2rem 2rem;
+}
