@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowLeft, Save, DollarSign, AlertTriangle } from "lucide-react"
+import { ArrowLeft, Save, AlertTriangle } from "lucide-react"
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 
@@ -130,5 +130,5 @@ export default function EditEmployeeSalaryPage({ params }: { params: { id: strin
                 </div>
             </div>
         </div>
-    )
+    );
 }
