@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
@@ -30,8 +31,6 @@ const employeeData = {
 
 
 export default function EditEmployeeSalaryPage({ params }: { params: { id: string }}) {
-    // In recent Next.js versions, params can be a promise.
-    // We'll destructure it to ensure we have the value.
     const { id } = params;
 
     return (
