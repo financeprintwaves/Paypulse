@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Users, Briefcase, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, Users, Briefcase, MessageSquare, Settings } from 'lucide-react';
 
 const navItems = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/employees', label: 'Employees', icon: Users },
     { href: '/admin/payroll', label: 'Payroll', icon: Briefcase },
     { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
+    { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export function AdminNav() {

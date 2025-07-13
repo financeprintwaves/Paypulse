@@ -3,25 +3,21 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Download, PlayCircle, SlidersHorizontal, FileText, CheckCircle, Users, DollarSign, Send } from "lucide-react"
+import { Download, PlayCircle, SlidersHorizontal, FileText, CheckCircle, Users, DollarSign, Send, Pencil, Upload } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { Separator } from '@/components/ui/separator';
 
 export default function PayrollPage() {
-    const [selectedPeriod, setSelectedPeriod] = useState<{month: string, year: string} | null>(null);
-
-    const handleStartPayroll = () => {
-        // In a real app, you'd fetch data for this period
-        setSelectedPeriod({ month: 'July', year: '2024' });
-    }
+    const [step, setStep] = useState(1);
+    const [selectedPeriod, setSelectedPeriod] = useState<{month: string, year: string} | null>({ month: 'July', year: '2024' });
 
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight text-primary">Run Payroll</h2>
-                    <p className="text-muted-foreground">Process and manage employee salaries.</p>
+                    <p className="text-muted-foreground">A step-by-step guide to process salaries.</p>
                 </div>
             </div>
             <div className="grid gap-8 md:grid-cols-3">
@@ -59,20 +55,39 @@ export default function PayrollPage() {
                                     </Select>
                                 </div>
                             </div>
-                            <div className="flex justify-end">
-                                <Button size="lg" onClick={handleStartPayroll}>
-                                    <PlayCircle className="mr-2 h-5 w-5"/>
-                                    Load Payroll Data
-                                </Button>
-                            </div>
                         </CardContent>
                     </Card>
 
-                    {selectedPeriod && (
+                    <Card className="bg-card/80 backdrop-blur-sm">
+                        <CardHeader>
+                            <CardTitle>2. Input Data</CardTitle>
+                            <CardDescription>Upload attendance and overtime data for the selected period.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="grid md:grid-cols-2 gap-6">
+                            <div className="flex flex-col items-start gap-3 p-4 bg-secondary/30 rounded-lg">
+                                <Label>Attendance Data</Label>
+                                <p className="text-xs text-muted-foreground">Upload the monthly attendance report (e.g., CSV, Excel).</p>
+                                <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
+                            </div>
+                             <div className="flex flex-col items-start gap-3 p-4 bg-secondary/30 rounded-lg">
+                                <Label>Overtime Data</Label>
+                                <p className="text-xs text-muted-foreground">Upload the consolidated overtime hours report.</p>
+                                <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
+                            </div>
+                        </CardContent>
+                        <CardFooter className="justify-end">
+                            <Button size="lg" onClick={() => setStep(2)}>
+                                <PlayCircle className="mr-2 h-5 w-5"/>
+                                Run Payroll Simulation
+                            </Button>
+                        </CardFooter>
+                    </Card>
+
+                    {step >= 2 && (
                          <Card className="bg-card/80 backdrop-blur-sm animate-in fade-in-50">
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2"><CheckCircle className="text-green-400" />2. Review and Process</CardTitle>
-                                <CardDescription>Review the summary for <span className="font-bold text-accent">{selectedPeriod.month} {selectedPeriod.year}</span> and proceed with actions.</CardDescription>
+                                <CardTitle className="flex items-center gap-2"><CheckCircle className="text-green-400" />3. Review and Finalize</CardTitle>
+                                <CardDescription>Review the summary for <span className="font-bold text-accent">{selectedPeriod?.month} {selectedPeriod?.year}</span> and make any final adjustments.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="grid grid-cols-3 gap-4 text-center">
@@ -94,18 +109,24 @@ export default function PayrollPage() {
                                 </div>
                                 <Separator className="my-4" />
                                  <p className="text-sm text-muted-foreground">
-                                    Once you have verified the data, you can generate salary slips for all employees and then proceed to process the payments.
+                                    The payroll has been calculated. You can make final edits to individual salary components before generating slips and processing payments.
                                 </p>
                             </CardContent>
-                             <CardFooter className="flex justify-end gap-4">
+                             <CardFooter className="flex justify-between items-center">
                                 <Button variant="outline">
-                                    <FileText className="mr-2 h-4 w-4"/>
-                                    Generate Slips
+                                    <Pencil className="mr-2 h-4 w-4"/>
+                                    Make Edits
                                 </Button>
-                                <Button className="bg-green-600 hover:bg-green-700">
-                                    <Send className="mr-2 h-4 w-4"/>
-                                    Process Payments
-                                </Button>
+                                <div className="flex gap-4">
+                                    <Button variant="outline">
+                                        <FileText className="mr-2 h-4 w-4"/>
+                                        Generate Slips
+                                    </Button>
+                                    <Button className="bg-green-600 hover:bg-green-700">
+                                        <Send className="mr-2 h-4 w-4"/>
+                                        Process Payments
+                                    </Button>
+                                </div>
                             </CardFooter>
                         </Card>
                     )}
@@ -154,3 +175,4 @@ export default function PayrollPage() {
             </div>
         </div>
     )
+}

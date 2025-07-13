@@ -58,20 +58,22 @@ export default function AdminDashboardPage() {
             </CardContent>
             </Card>
         </Link>
-        <Card className="bg-card/80 backdrop-blur-sm">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-primary-foreground">
-              System Settings
-            </CardTitle>
-            <Settings className="h-5 w-5 text-accent" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">&nbsp;</div>
-            <p className="text-xs text-muted-foreground">
-              Configure payroll and policies
-            </p>
-          </CardContent>
-        </Card>
+        <Link href="/admin/settings">
+            <Card className="bg-card/80 backdrop-blur-sm hover:border-accent transition-all">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-primary-foreground">
+                System Settings
+                </CardTitle>
+                <Settings className="h-5 w-5 text-accent" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">&nbsp;</div>
+                <p className="text-xs text-muted-foreground">
+                Configure payroll and policies
+                </p>
+            </CardContent>
+            </Card>
+        </Link>
       </div>
       <Card className="bg-card/80 backdrop-blur-sm">
         <CardHeader>
