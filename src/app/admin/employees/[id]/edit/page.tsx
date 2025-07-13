@@ -30,6 +30,10 @@ const employeeData = {
 
 
 export default function EditEmployeeSalaryPage({ params }: { params: { id: string }}) {
+    // In recent Next.js versions, params can be a promise.
+    // We'll destructure it to ensure we have the value.
+    const { id } = params;
+
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
             <div className="flex items-center gap-4">
@@ -40,7 +44,7 @@ export default function EditEmployeeSalaryPage({ params }: { params: { id: strin
                 </Button>
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight text-primary">Edit Employee Salary</h2>
-                    <p className="text-muted-foreground">Editing details for {employeeData.name} ({params.id})</p>
+                    <p className="text-muted-foreground">Editing details for {employeeData.name} ({id})</p>
                 </div>
             </div>
 
@@ -113,7 +117,7 @@ export default function EditEmployeeSalaryPage({ params }: { params: { id: strin
                             <CardTitle className="flex items-center gap-2">
                                 <AlertTriangle className="text-orange-400" />
                                 Financial Summary
-                            </CardTitle>
+                            </Title>
                             <CardDescription>Current outstanding balance for the employee.</CardDescription>
                         </CardHeader>
                         <CardContent className="text-center">
