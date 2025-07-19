@@ -27,7 +27,6 @@ const employeeData = {
   }
 };
 
-
 export default function EditEmployeeSalaryPage({ params }: { params: { id: string } }) {
     const { id } = params;
 
