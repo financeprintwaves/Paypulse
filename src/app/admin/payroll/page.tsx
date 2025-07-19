@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -11,6 +12,27 @@ import { Separator } from '@/components/ui/separator';
 export default function PayrollPage() {
     const [step, setStep] = useState(1);
     const [selectedPeriod, setSelectedPeriod] = useState<{month: string, year: string} | null>({ month: 'July', year: '2024' });
+
+    const handleDownloadSample = (type: 'attendance' | 'overtime') => {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        let fileName = '';
+
+        if (type === 'attendance') {
+            csvContent += "employee_id,date,status\nPP-12345,2024-07-01,Present\nPP-67890,2024-07-01,Absent";
+            fileName = 'sample_attendance.csv';
+        } else {
+            csvContent += "employee_id,date,overtime_hours\nPP-12345,2024-07-05,2.5\nPP-67890,2024-07-08,1";
+            fileName = 'sample_overtime.csv';
+        }
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link); 
+        link.click();
+        document.body.removeChild(link);
+    };
 
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -67,12 +89,18 @@ export default function PayrollPage() {
                             <div className="flex flex-col items-start gap-3 p-4 bg-secondary/30 rounded-lg">
                                 <Label>Attendance Data</Label>
                                 <p className="text-xs text-muted-foreground">Upload the monthly attendance report (e.g., CSV, Excel).</p>
-                                <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
+                                <div className="flex gap-2">
+                                    <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
+                                    <Button variant="ghost" onClick={() => handleDownloadSample('attendance')}><Download className="mr-2 h-4 w-4"/> Download Sample</Button>
+                                </div>
                             </div>
                              <div className="flex flex-col items-start gap-3 p-4 bg-secondary/30 rounded-lg">
                                 <Label>Overtime Data</Label>
                                 <p className="text-xs text-muted-foreground">Upload the consolidated overtime hours report.</p>
-                                <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
+                                <div className="flex gap-2">
+                                    <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
+                                    <Button variant="ghost" onClick={() => handleDownloadSample('overtime')}><Download className="mr-2 h-4 w-4"/> Download Sample</Button>
+                                </div>
                             </div>
                         </CardContent>
                         <CardFooter className="justify-end">
