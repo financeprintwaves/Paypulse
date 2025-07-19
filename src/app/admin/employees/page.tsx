@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -77,7 +78,7 @@ export default function ManageEmployeesPage() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem asChild>
-                                                  <Link href={`/profile`}>
+                                                  <Link href={`/profile?id=${employee.id}`}>
                                                     <Eye className="mr-2 h-4 w-4" />
                                                     View Details
                                                   </Link>
