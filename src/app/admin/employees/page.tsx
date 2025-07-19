@@ -76,14 +76,16 @@ export default function ManageEmployeesPage() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem asChild>
+                                                  <Link href={`/profile`}>
                                                     <Eye className="mr-2 h-4 w-4" />
                                                     View Details
+                                                  </Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem asChild>
                                                   <Link href={`/admin/employees/${employee.id}/edit`}>
                                                     <Pencil className="mr-2 h-4 w-4" />
-                                                    Edit
+                                                    Edit Salary
                                                   </Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem className="text-red-400">
