@@ -7,9 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft, Save, AlertTriangle } from "lucide-react"
 import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
 
-// Placeholder data - in a real app, this would be fetched based on the [id] param
 const employeeData = {
   id: "PP-12345", 
   name: "Jane Doe",
@@ -30,7 +28,7 @@ const employeeData = {
 };
 
 
-export default function EditEmployeeSalaryPage({ params }: { params: { id: string }}) {
+export default function EditEmployeeSalaryPage({ params }: { params: { id: string } }) {
     const { id } = params;
 
     return (
