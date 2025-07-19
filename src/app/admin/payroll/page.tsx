@@ -13,17 +13,12 @@ export default function PayrollPage() {
     const [step, setStep] = useState(1);
     const [selectedPeriod, setSelectedPeriod] = useState<{month: string, year: string} | null>({ month: 'July', year: '2024' });
 
-    const handleDownloadSample = (type: 'attendance' | 'overtime') => {
+    const handleDownloadSample = () => {
         let csvContent = "data:text/csv;charset=utf-8,";
-        let fileName = '';
-
-        if (type === 'attendance') {
-            csvContent += "employee_id,date,status\nPP-12345,2024-07-01,Present\nPP-67890,2024-07-01,Absent";
-            fileName = 'sample_attendance.csv';
-        } else {
-            csvContent += "employee_id,date,overtime_hours\nPP-12345,2024-07-05,2.5\nPP-67890,2024-07-08,1";
-            fileName = 'sample_overtime.csv';
-        }
+        csvContent += "employee_id,total_absent_days,total_overtime_hours,other_deductions\n";
+        csvContent += "PP-12345,1,5,50.00\n";
+        csvContent += "PP-67890,0,8,0.00\n";
+        const fileName = 'monthly_payroll_data_sample.csv';
 
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
@@ -83,23 +78,15 @@ export default function PayrollPage() {
                     <Card className="bg-card/80 backdrop-blur-sm">
                         <CardHeader>
                             <CardTitle>2. Input Data</CardTitle>
-                            <CardDescription>Upload attendance and overtime data for the selected period.</CardDescription>
+                            <CardDescription>Upload a single sheet with monthly totals for absence, overtime, and other deductions for the selected period.</CardDescription>
                         </CardHeader>
-                        <CardContent className="grid md:grid-cols-2 gap-6">
+                        <CardContent>
                             <div className="flex flex-col items-start gap-3 p-4 bg-secondary/30 rounded-lg">
-                                <Label>Attendance Data</Label>
-                                <p className="text-xs text-muted-foreground">Upload the monthly attendance report (e.g., CSV, Excel).</p>
+                                <Label>Monthly Payroll Data</Label>
+                                <p className="text-xs text-muted-foreground">Upload the consolidated monthly report (e.g., CSV, Excel). It should include absent days, overtime hours, and any other deductions.</p>
                                 <div className="flex gap-2">
                                     <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
-                                    <Button variant="ghost" onClick={() => handleDownloadSample('attendance')}><Download className="mr-2 h-4 w-4"/> Download Sample</Button>
-                                </div>
-                            </div>
-                             <div className="flex flex-col items-start gap-3 p-4 bg-secondary/30 rounded-lg">
-                                <Label>Overtime Data</Label>
-                                <p className="text-xs text-muted-foreground">Upload the consolidated overtime hours report.</p>
-                                <div className="flex gap-2">
-                                    <Button variant="outline"><Upload className="mr-2 h-4 w-4"/> Upload File</Button>
-                                    <Button variant="ghost" onClick={() => handleDownloadSample('overtime')}><Download className="mr-2 h-4 w-4"/> Download Sample</Button>
+                                    <Button variant="ghost" onClick={handleDownloadSample}><Download className="mr-2 h-4 w-4"/> Download Sample</Button>
                                 </div>
                             </div>
                         </CardContent>
