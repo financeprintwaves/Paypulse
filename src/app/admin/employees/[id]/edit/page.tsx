@@ -25,7 +25,7 @@ const employeeData = {
     damage: 0,
     others: 200
   }
-};
+}
 
 export default function EditEmployeeSalaryPage({ params }: { params: { id: string } }) {
     const { id } = params;
