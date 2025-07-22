@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { generateLetterhead } from "@/app/actions";
 import { Logo } from './icons';
 import { cn } from '@/lib/utils';
+import { Badge } from './ui/badge';
 
 interface Employee {
     name: string;
@@ -25,6 +26,7 @@ interface SlipData {
     gross: number;
     deductions: number;
     net: number;
+    payments: { amount: number; method: string; date: string }[];
 }
 
 interface SalarySlipDialogProps {
@@ -78,12 +80,14 @@ export function SalarySlipDialog({ employee, slipData, trigger }: SalarySlipDial
         { name: "Medical", amount: 150 },
         { name: "Damage", amount: 0 },
         { name: "Others", amount: 200 },
+        { name: "Outstanding Loan", amount: 186 },
     ];
 
-    const totalEarnings = earnings.reduce((sum, item) => sum + item.amount, 0);
-    const totalDeductions = deductions.reduce((sum, item) => sum + item.amount, 0);
-    const netSalary = totalEarnings - totalDeductions;
-    const isOutstanding = netSalary < 0;
+    const totalEarnings = slipData.gross;
+    const totalDeductions = slipData.deductions;
+    const netSalary = slipData.net;
+    const totalPaid = slipData.payments.reduce((sum, item) => sum + item.amount, 0);
+    const remaining = netSalary - totalPaid;
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -170,23 +174,54 @@ export function SalarySlipDialog({ employee, slipData, trigger }: SalarySlipDial
                      <section className="grid md:grid-cols-2 gap-8 py-4 bg-secondary/30 rounded-lg mt-4 px-4">
                         <div className="space-y-2">
                             <div className="flex justify-between">
-                                <span className="font-semibold">Total Earnings:</span>
+                                <span className="font-semibold">Gross Salary:</span>
                                 <span>${totalEarnings.toFixed(2)}</span>
                             </div>
                              <div className="flex justify-between">
                                 <span className="font-semibold">Total Deductions:</span>
-                                <span>${totalDeductions.toFixed(2)}</span>
+                                <span>-${totalDeductions.toFixed(2)}</span>
+                            </div>
+                            <Separator/>
+                            <div className="flex justify-between font-bold text-lg">
+                                <span className="font-headline">Net Salary:</span>
+                                <span className="text-primary">${netSalary.toFixed(2)}</span>
                             </div>
                         </div>
                         <div className="flex flex-col items-end justify-center">
-                            <p className={cn("text-sm", isOutstanding ? 'text-red-400' : 'text-muted-foreground')}>
-                                {isOutstanding ? 'Outstanding' : 'Net Salary'}
+                            <p className={cn("text-sm", remaining > 0 ? 'text-orange-400' : 'text-green-400')}>
+                                {remaining > 0 ? 'Remaining Balance' : 'Status'}
                             </p>
-                            <p className={cn("text-3xl font-bold font-headline", isOutstanding ? 'text-red-400' : 'text-green-400')}>
-                                ${Math.abs(netSalary).toFixed(2)}
+                            <p className={cn("text-3xl font-bold font-headline", remaining > 0 ? 'text-orange-400' : 'text-green-400')}>
+                                {remaining > 0 ? `$${remaining.toFixed(2)}` : 'Paid In Full'}
                             </p>
                         </div>
                      </section>
+                      <Separator className="my-4"/>
+                      <section>
+                         <h3 className="font-semibold mb-2">Payment Details</h3>
+                         <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Date</TableHead>
+                                        <TableHead>Method</TableHead>
+                                        <TableHead className="text-right">Amount</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {slipData.payments.map((item, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{item.date}</TableCell>
+                                            <TableCell><Badge variant="outline">{item.method}</Badge></TableCell>
+                                            <TableCell className="text-right">${item.amount.toFixed(2)}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                    <TableRow className="bg-secondary/50 font-bold">
+                                            <TableCell colSpan={2} className="text-right">Total Paid</TableCell>
+                                            <TableCell className="text-right">${totalPaid.toFixed(2)}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                      </section>
                 </div>
                 <Button className="mt-4 w-full bg-accent hover:bg-accent/80" onClick={() => window.print()}>Download Slip</Button>
             </DialogContent>

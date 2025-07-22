@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
@@ -6,12 +7,12 @@ import { Button } from "@/components/ui/button"
 import { SalarySlipDialog } from "@/components/salary-slip"
 
 const salaryData = [
-    { month: "June 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid" },
-    { month: "May 2024", gross: 5700, deductions: 536, net: 5164, status: "Paid" },
-    { month: "April 2024", gross: 5800, deductions: 536, net: 5264, status: "Paid" },
-    { month: "March 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid" },
-    { month: "February 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid" },
-    { month: "January 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid" },
+    { month: "June 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid", payments: [{amount: 5214, method: 'WPS', date: '2024-06-30'}] },
+    { month: "May 2024", gross: 5700, deductions: 536, net: 5164, status: "Paid", payments: [{amount: 5164, method: 'WPS', date: '2024-05-31'}] },
+    { month: "April 2024", gross: 5800, deductions: 536, net: 5264, status: "Paid", payments: [{amount: 5264, method: 'WPS', date: '2024-04-30'}] },
+    { month: "March 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid", payments: [{amount: 5214, method: 'WPS', date: '2024-03-31'}] },
+    { month: "February 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid", payments: [{amount: 5214, method: 'WPS', date: '2024-02-29'}] },
+    { month: "January 2024", gross: 5750, deductions: 536, net: 5214, status: "Paid", payments: [{amount: 5214, method: 'WPS', date: '2024-01-31'}] },
 ]
 
 const employee = {
