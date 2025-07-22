@@ -18,6 +18,11 @@ const LoanEligibilityInputSchema = z.object({
 });
 export type LoanEligibilityInput = z.infer<typeof LoanEligibilityInputSchema>;
 
+// We need to add `currentDate` to the prompt's input schema.
+const LoanEligibilityPromptInputSchema = LoanEligibilityInputSchema.extend({
+    currentDate: z.string().describe("Today's date."),
+});
+
 const LoanEligibilityOutputSchema = z.object({
   eligibleAmount: z.number().describe('The calculated maximum loan amount the employee is eligible for.'),
   reasoning: z.string().describe('A brief explanation of how the eligibility was determined.'),
@@ -30,7 +35,7 @@ export async function calculateLoanEligibility(input: LoanEligibilityInput): Pro
 
 const prompt = ai.definePrompt({
   name: 'loanEligibilityPrompt',
-  input: {schema: LoanEligibilityInputSchema},
+  input: {schema: LoanEligibilityPromptInputSchema},
   output: {schema: LoanEligibilityOutputSchema},
   prompt: `You are an expert financial analyst for an HR department. Your task is to calculate the maximum loan (advance) an employee is eligible for based on their financial data.
 
