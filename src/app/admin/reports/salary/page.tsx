@@ -5,14 +5,8 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Download, Filter, MoreHorizontal, Pencil, Wallet } from "lucide-react"
+import { Download, Filter, Wallet, DollarSign } from "lucide-react"
 import { Badge } from '@/components/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { ManagePaymentsDialog } from '@/components/manage-payments-dialog';
 
 const initialEmployeeSalaries = [
@@ -46,6 +40,22 @@ export default function SalaryReportPage() {
             prev.map(emp => emp.id === employeeId ? {...emp, payments: newPayments} : emp)
         );
     }
+    
+    const summary = employeeSalaries.reduce((acc, emp) => {
+        const totalPaidForEmp = emp.payments.reduce((sum, p) => sum + p.amount, 0);
+        acc.totalNetSalary += emp.net;
+        acc.totalPaid += totalPaidForEmp;
+        emp.payments.forEach(p => {
+            acc.byMethod[p.method] = (acc.byMethod[p.method] || 0) + p.amount;
+        });
+        return acc;
+    }, { 
+        totalNetSalary: 0, 
+        totalPaid: 0, 
+        byMethod: {} as Record<string, number> 
+    });
+
+    summary.totalRemaining = summary.totalNetSalary - summary.totalPaid;
 
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -65,6 +75,47 @@ export default function SalaryReportPage() {
                     </Button>
                 </div>
             </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Total Net Salary</CardTitle>
+                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">${summary.totalNetSalary.toFixed(2)}</div>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium text-green-400">Total Paid</CardTitle>
+                        <DollarSign className="h-4 w-4 text-green-400" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-green-400">${summary.totalPaid.toFixed(2)}</div>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium text-orange-400">Total Remaining</CardTitle>
+                        <DollarSign className="h-4 w-4 text-orange-400" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-orange-400">${summary.totalRemaining.toFixed(2)}</div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium">Payment Modes</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground space-y-1">
+                        <div>WPS: <span className="font-semibold text-primary-foreground">${(summary.byMethod['WPS'] || 0).toFixed(2)}</span></div>
+                        <div>Cash: <span className="font-semibold text-primary-foreground">${(summary.byMethod['Cash'] || 0).toFixed(2)}</span></div>
+                        <div>Online: <span className="font-semibold text-primary-foreground">${(summary.byMethod['Online'] || 0).toFixed(2)}</span></div>
+                    </CardContent>
+                </Card>
+            </div>
+
              <Card className="bg-card/80 backdrop-blur-sm">
                 <CardHeader>
                     <CardTitle>Employee Salary Details</CardTitle>
@@ -131,4 +182,3 @@ export default function SalaryReportPage() {
         </div>
     )
 }
-
