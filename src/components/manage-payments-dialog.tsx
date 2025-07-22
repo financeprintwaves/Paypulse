@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { PlusCircle, Trash2, Save, XCircle } from 'lucide-react';
 import { Separator } from './ui/separator';
+import { Badge } from './ui/badge';
 
 type Payment = {
     amount: number;
